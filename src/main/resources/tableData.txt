@@ -1,0 +1,24 @@
+{
+"data": [
+        {
+            "lot": "TZ20190509.001",
+            "rfid": "TZ20190509.001",
+            "shelfLocation": "1,1",
+            "processStep": "CLEAN TRACK",
+            "eqp": "TELTESTEQUIP",
+            "ppid": "TESTRCP1",
+            "lotNum": "2",
+            "processState": "---"
+        },
+         {
+                      "lot": "TZ20190509.002",
+                      "rfid": "TZ20190509.002",
+                      "shelfLocation": "1,2",
+                      "processStep": "CLEAN TRACK",
+                      "eqp": "TELTESTEQUIP",
+                      "ppid": "TESTRCP2",
+                      "lotNum": "3",
+                      "processState": "---"
+                  }
+    ]
+}

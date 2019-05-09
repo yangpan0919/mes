@@ -1,0 +1,42 @@
+spring:
+    activemq:
+#        broker-url: tcp://192.168.1.123:61616
+        broker-url: tcp://192.168.2.182:61616
+#        broker-url: tcp://localhost:61616
+        user: admin
+        password: admin
+#    activemq:
+#        broker-url: failover:(tcp://172.17.173.6:61616,tcp://172.17.173.7:61616)
+#        user: tfinfo
+#        password: 123123
+#
+#        pool:
+#            max-connections: 5
+#            enabled: true
+#    activemq:
+#        broker-url: tcp://192.168.1.123:61616
+#        user: admin
+#        password: admin
+#        in-memory: false  # true为默认代理URL保存在内存，false 为使用服务器
+#        pool:
+#            enabled: true #是否用PooledConnectionFactory代替普通的ConnectionFactory
+#            max-connections: 20 #连接池最大连接数量
+#            block-if-full: true  #当连接请求和池满时是否阻塞，设置false会抛"JMSException"
+#            block-if-full-timeout: -1ms #如果池仍然满，则在抛出异常前阻塞时间
+##            create-connection-on-startup: true # 是否在启动时创建连接，可在启动时用于加热池
+##            expiry-timeout: 0ms # 连接过期超时时间
+#            idle-timeout: 30s #连接空闲超时时间
+#            maximum-active-session-per-connection: 500  #每个连接的有效会话的最大数目
+##            reconnect-on-exception: true #当有"JMSException"时尝试重新连接
+#            use-anonymous-producers: true #在空闲连接清除线程
+#        # 如果使用ObjectMessage传输对象，必须要加上这个信任包，否则会报ClassNotFound异常
+#        packages:
+#            trust-all: true  #信任所有的包
+#        close-timeout: 15s #在考虑结束之前等的时间
+#        non-blocking-redelivery: false #是否在回滚消息之前停止消息传递，这意味着启用此命令时，消息顺序不会被保留
+#        send-timeout: 0s
+javafx:
+  stage:
+    resizable: false
+  title: MES
+  appicons: /logoTaiZhi.png
