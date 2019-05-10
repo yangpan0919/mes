@@ -9,13 +9,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1246.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.tzauto.mes.javafx.controller.ViewController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1240.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.tzauto.mes.javafx.controller.ViewController">
    <children>
       <GridPane fx:id="gridPane">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1200.0" minWidth="10.0" prefWidth="1200.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1208.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="12.0" prefWidth="18.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -38,7 +38,7 @@
                   <TableColumn fx:id="lotNum" minWidth="0.0" prefWidth="122.0" text="LOTNUM(批次数量)" />
                   <TableColumn fx:id="inTime" minWidth="0.0" prefWidth="122.0" text="INTIME(进站时间)" />
                   <TableColumn fx:id="outTime" minWidth="9.0" prefWidth="135.0" text="OUTTIME(出站时间)" />
-                  <TableColumn fx:id="processState" prefWidth="146.0" text="PROCESS-STATE(状态)" />
+                  <TableColumn fx:id="processState" prefWidth="154.0" text="PROCESS-STATE(状态)" />
               </columns>
             </TableView>
             <TextArea fx:id="eventLog" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
