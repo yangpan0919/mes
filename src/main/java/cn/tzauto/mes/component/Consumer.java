@@ -12,13 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
 
 @Component
 public class Consumer {
-    
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     @Autowired
     UiLogUtil uiLogUtil;
 
@@ -71,7 +74,8 @@ public class Consumer {
                 for(int i=0;i<list.size();i++){
                     SimpleRecipeParaProperty property =list.get(i);
                     if(property.getRfid().equals(rfid)){
-                        property.setProcessState("Track In");
+                        property.setProcessState("生产中（PROCESSING）");
+                        property.setInTime(LocalDateTime.now().format(formatter));
                     }
                 }
                 viewController.getDataTable().setItems(list);
@@ -95,12 +99,12 @@ public class Consumer {
             for(int i=0;i<list.size();i++){
                 SimpleRecipeParaProperty property =list.get(i);
                 if(property.getRfid().equals(out)){
-                    property.setProcessState("Track Out");
+                    property.setProcessState("已完工（COMPLETED）");
+                    property.setOutTime(LocalDateTime.now().format(formatter));
                 }
             }
+
             viewController.getDataTable().setItems(list);
-//            map.put("LOT",null);
-//            map.put("DESC","参数错误");
             return map;
         }else if("mes.startCheck".equals(name)){
 

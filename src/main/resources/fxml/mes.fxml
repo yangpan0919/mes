@@ -11,12 +11,12 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.tzauto.mes.javafx.controller.ViewController">
 
-    <GridPane fx:id="gridPane" alignment="center" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml">
+    <GridPane fx:id="gridPane" alignment="center" hgap="10" prefHeight="609.0" prefWidth="942.0" vgap="10" xmlns:fx="http://javafx.com/fxml">
 
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="779.0" minWidth="10.0" prefWidth="779.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="2.0" prefWidth="2.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="781.0" minWidth="10.0" prefWidth="781.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="0.0" prefWidth="0.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="30.0" minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -25,18 +25,20 @@
             <RowConstraints maxHeight="381.0" minHeight="10.0" prefHeight="222.0" vgrow="SOMETIMES" />
         </rowConstraints>
         <children>
-            <Label prefHeight="27.0" prefWidth="69.0" text="LOG" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextArea fx:id="eventLog" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TableView fx:id="dataTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label prefHeight="27.0" prefWidth="65.0" text="LOG" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextArea fx:id="eventLog" prefHeight="222.0" prefWidth="900.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TableView fx:id="dataTable" prefHeight="294.0" prefWidth="813.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                 <columns>
-                    <TableColumn fx:id="lot" prefWidth="107.0" text="LOT" />
-                    <TableColumn fx:id="rfid" prefWidth="107.0" text="RFID" />
-                    <TableColumn fx:id="shelfLocation" prefWidth="113.0" text="SHELF-LOCATION" />
-                    <TableColumn fx:id="processStep" prefWidth="98.0" text="PROCESS-STEP" />
-                    <TableColumn fx:id="eqp" prefWidth="96.0" text="EQP" />
-                    <TableColumn fx:id="ppid" prefWidth="90.0" text="PPID" />
-                    <TableColumn fx:id="lotNum" prefWidth="60.0" text="LOTNUM" />
-                    <TableColumn fx:id="processState" prefWidth="107.0" text="PROCESS-STATE" />
+                    <TableColumn fx:id="lot" prefWidth="74.0" text="LOT(批次)" />
+                    <TableColumn fx:id="rfid" prefWidth="104.0" text="RFID()" />
+                    <TableColumn fx:id="shelfLocation" prefWidth="74.0" text="SHELF-LOCATION()" />
+                    <TableColumn fx:id="processStep" prefWidth="113.0" text="PROCESS-STEP()" />
+                    <TableColumn fx:id="eqp" prefWidth="104.0" text="EQP()" />
+                    <TableColumn fx:id="ppid" prefWidth="63.0" text="PPID()" />
+                    <TableColumn fx:id="lotNum" prefWidth="65.0" text="LOTNUM()" />
+                    <TableColumn fx:id="inTime" prefWidth="64.0" text="INTIME(进站时间)" />
+                    <TableColumn fx:id="outTime" prefWidth="85.0" text="OUTTIME(出站时间)" />
+                    <TableColumn fx:id="processState" prefWidth="64.0" text="PROCESS-STATE()" />
                 </columns>
             </TableView>
         </children>

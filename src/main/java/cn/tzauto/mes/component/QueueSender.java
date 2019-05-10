@@ -38,18 +38,18 @@ public class QueueSender {
 
     public void  sendMap(String queueName, final Map message) {
         //发的是Queue,支持持久化
-//        jmsTemplate.convertAndSend(queueName,message);
-        Message message1 = jmsTemplate.sendAndReceive(queueName, new MessageCreator() {
-            @Override
-            public Message createMessage(Session session) throws JMSException {
-
-                MapMessage mapMessage = session.createMapMessage();
-                mapMessage.setStringProperty("msgName","mes.trackIn");
-                mapMessage.setStringProperty("RFID","1");
-                return mapMessage;
-            }
-        });
-        System.out.println(message1.toString());
+        jmsTemplate.convertAndSend(queueName,message);
+//        Message message1 = jmsTemplate.sendAndReceive(queueName, new MessageCreator() {
+//            @Override
+//            public Message createMessage(Session session) throws JMSException {
+//
+//                MapMessage mapMessage = session.createMapMessage();
+//                mapMessage.setStringProperty("msgName","mes.trackIn");
+//                mapMessage.setStringProperty("RFID","1");
+//                return mapMessage;
+//            }
+//        });
+//        System.out.println(message1.toString());
     }
 
 }

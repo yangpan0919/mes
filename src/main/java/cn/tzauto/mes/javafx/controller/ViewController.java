@@ -9,18 +9,22 @@ import cn.tzauto.mes.javafx.view.FirstView;
 import cn.tzauto.mes.utils.UiLogUtil;
 import com.google.gson.Gson;
 import de.felixroske.jfxsupport.FXMLController;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -54,7 +58,11 @@ public class ViewController  implements Initializable {
     @FXML
     private TableColumn<SimpleRecipeParaProperty, String> lotNum = new TableColumn<>();
     @FXML
-    private TableColumn<SimpleRecipeParaProperty, String> processState = new TableColumn<>();
+    private TableColumn<SimpleRecipeParaProperty, String> inTime = new TableColumn<>();
+    @FXML
+    private TableColumn<SimpleRecipeParaProperty, String> outTime = new TableColumn<>();
+    @FXML
+    private TableColumn<SimpleRecipeParaProperty, String> processState = new TableColumn<SimpleRecipeParaProperty, String>();
 
     public ObservableList<SimpleRecipeParaProperty> getList() {
         return list;
@@ -81,6 +89,8 @@ public class ViewController  implements Initializable {
         eqp.setCellValueFactory(celldata -> celldata.getValue().eqpProperty());
         ppid.setCellValueFactory(celldata -> celldata.getValue().ppidProperty());
         lotNum.setCellValueFactory(celldata -> celldata.getValue().lotNumProperty());
+        inTime.setCellValueFactory(celldata -> celldata.getValue().inTimeProperty());
+        outTime.setCellValueFactory(celldata -> celldata.getValue().outTimeProperty());
         processState.setCellValueFactory(celldata -> celldata.getValue().processStateProperty());
 
         InputStreamReader inputStream = null;
@@ -97,6 +107,41 @@ public class ViewController  implements Initializable {
         Gson gson = new Gson();
         DataTable data = gson.fromJson(jsonStr, DataTable.class);
         List<DataTableProperty> dataList = data.getData();
+        processState.setCellFactory(new Callback<TableColumn<SimpleRecipeParaProperty, String>, TableCell<SimpleRecipeParaProperty, String>>() {
+
+            @Override
+            public TableCell call(TableColumn param) {
+                TableCell<SimpleRecipeParaProperty, String> tableCell = new TableCell<SimpleRecipeParaProperty, String>(){
+
+                    ObservableValue ov;
+
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!empty) {
+                            ov = getTableColumn().getCellObservableValue(getIndex());
+                            if(getTableRow() != null&&!ov.equals("")){
+
+                                SimpleRecipeParaProperty text = (SimpleRecipeParaProperty)this.getTableRow().getItem();
+
+                                if(text.getProcessState().equals("待作业（IDLE）")){
+//                                    this.getTableRow().setStyle("-fx-background-color: whitesmoke");
+//                                    this.getTableRow().
+//                                    this.getTableRow().setStyle("-fx-background-color: green");
+                                }else if(text.getProcessState().equals("生产中（PROCESSING）")){
+                                    this.getTableRow().setStyle("-fx-background-color: green");
+                                }else if(text.getProcessState().equals("已完工（COMPLETED）")){
+                                    this.getTableRow().setStyle("-fx-background-color: whitesmoke");
+                                }else if(text.getProcessState().equals("扣留（HOLD）")){
+                                    this.getTableRow().setStyle("-fx-background-color: yellow");
+                                }
+                            }
+                            setText(item);
+                        }
+                    }
+                };
+                return tableCell;
+            }
+        });
 
         for(int i=0,length = dataList.size();i<length;i++){
             DataTableProperty dataTableProperty = dataList.get(i);

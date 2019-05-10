@@ -12,6 +12,8 @@ public class SimpleRecipeParaProperty {
     private SimpleStringProperty eqp;
     private SimpleStringProperty ppid;
     private SimpleStringProperty lotNum;
+    private SimpleStringProperty inTime;
+    private SimpleStringProperty outTime;
     private SimpleStringProperty processState;
 
     public SimpleRecipeParaProperty() {
@@ -22,6 +24,8 @@ public class SimpleRecipeParaProperty {
         this.eqp = new SimpleStringProperty("");
         this.ppid = new SimpleStringProperty("");
         this.lotNum = new SimpleStringProperty("");
+        this.inTime = new SimpleStringProperty("");
+        this.outTime = new SimpleStringProperty("");
         this.processState = new SimpleStringProperty("");
     }
 
@@ -33,7 +37,33 @@ public class SimpleRecipeParaProperty {
         this.eqp = new SimpleStringProperty(eqp);
         this.ppid = new SimpleStringProperty(ppid);
         this.lotNum = new SimpleStringProperty(lotNum);
+        this.inTime = new SimpleStringProperty("");
+        this.outTime = new SimpleStringProperty("");
         this.processState = new SimpleStringProperty(processState);
+    }
+
+    public String getInTime() {
+        return inTime.get();
+    }
+
+    public SimpleStringProperty inTimeProperty() {
+        return inTime;
+    }
+
+    public void setInTime(String inTime) {
+        this.inTime.set(inTime);
+    }
+
+    public String getOutTime() {
+        return outTime.get();
+    }
+
+    public SimpleStringProperty outTimeProperty() {
+        return outTime;
+    }
+
+    public void setOutTime(String outTime) {
+        this.outTime.set(outTime);
     }
 
     public String getLotNum() {

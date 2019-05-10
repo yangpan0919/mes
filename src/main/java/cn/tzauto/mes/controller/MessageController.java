@@ -65,16 +65,28 @@ public class MessageController {
 //        queueSender.sendMap("C2S.Q.EDA_DATA",text);
 //        return "成功";
 //    }
-//    @GetMapping("/mine")
-//    public String testMy0(){
-//        Map<String,String> text = new HashMap<>();
-//
-//        text.put("msgName","mes.trackIn");
-//        text.put("lot","qwe");
-//        text.put("waferNum","qwe");
-//        text.put("type","start");
-//
-//        queueSender.sendMap("C2S.Q.SPECIFIC_DATA",text);
-//        return "成功";
-//    }
+    @GetMapping("/mine")
+    public String testMy0(){
+        Map<String,String> text = new HashMap<>();
+
+        text.put("msgName","mes.trackIn");
+        text.put("RFID","TZ20190509.001");
+        text.put("waferNum","qwe");
+        text.put("type","start");
+
+        queueSender.sendMap("C2S.Q.SPECIFIC_DATA",text);
+        return "成功";
+    }
+    @GetMapping("/mine1")
+    public String testMy10(){
+        Map<String,String> text = new HashMap<>();
+
+        text.put("msgName","mes.trackOut");
+        text.put("mes.trackOut","TZ20190509.001");
+        text.put("waferNum","qwe");
+        text.put("type","start");
+
+        queueSender.sendMap("C2S.Q.SPECIFIC_DATA",text);
+        return "成功";
+    }
 }
