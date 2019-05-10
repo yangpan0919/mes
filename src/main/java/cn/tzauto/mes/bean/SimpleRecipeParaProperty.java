@@ -14,6 +14,7 @@ public class SimpleRecipeParaProperty {
     private SimpleStringProperty lotNum;
     private SimpleStringProperty inTime;
     private SimpleStringProperty outTime;
+    private SimpleStringProperty error;
     private SimpleStringProperty processState;
 
     public SimpleRecipeParaProperty() {
@@ -26,6 +27,7 @@ public class SimpleRecipeParaProperty {
         this.lotNum = new SimpleStringProperty("");
         this.inTime = new SimpleStringProperty("");
         this.outTime = new SimpleStringProperty("");
+        this.error = new SimpleStringProperty("");
         this.processState = new SimpleStringProperty("");
     }
 
@@ -39,7 +41,20 @@ public class SimpleRecipeParaProperty {
         this.lotNum = new SimpleStringProperty(lotNum);
         this.inTime = new SimpleStringProperty("");
         this.outTime = new SimpleStringProperty("");
+        this.error = new SimpleStringProperty("");
         this.processState = new SimpleStringProperty(processState);
+    }
+
+    public String getError() {
+        return error.get();
+    }
+
+    public SimpleStringProperty errorProperty() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error.set(error);
     }
 
     public String getInTime() {

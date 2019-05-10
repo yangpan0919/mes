@@ -55,16 +55,16 @@ public class MessageController {
 //        queueSender.sendMap("C2S.Q.EDA_DATA",text);
 //        return "成功";
 //    }
-//    @GetMapping("/lalala0")
-//    public String test0(){
-//        Map<String,String> text = new HashMap<>();
-//        text.put("devicecode","qwe");
-//        text.put("lot","qwe");
-//        text.put("waferNum","qwe");
-//        text.put("type","start");
-//        queueSender.sendMap("C2S.Q.EDA_DATA",text);
-//        return "成功";
-//    }
+    @GetMapping("/lalala0")
+    public String test0(){
+        Map<String,String> text = new HashMap<>();
+        text.put("devicecode","qwe");
+        text.put("lot","qwe");
+        text.put("waferNum","qwe");
+        text.put("type","start");
+        queueSender.sendMap("edc.data.completed",text);
+        return "成功";
+    }
     @GetMapping("/mine")
     public String testMy0(){
         Map<String,String> text = new HashMap<>();

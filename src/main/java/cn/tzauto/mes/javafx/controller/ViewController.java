@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.*;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -124,15 +123,15 @@ public class ViewController  implements Initializable {
                                 SimpleRecipeParaProperty text = (SimpleRecipeParaProperty)this.getTableRow().getItem();
 
                                 if(text.getProcessState().equals("待作业（IDLE）")){
-//                                    this.getTableRow().setStyle("-fx-background-color: whitesmoke");
-//                                    this.getTableRow().
-//                                    this.getTableRow().setStyle("-fx-background-color: green");
+                                    this.getTableRow().setStyle("-fx-background-color: ");
                                 }else if(text.getProcessState().equals("生产中（PROCESSING）")){
                                     this.getTableRow().setStyle("-fx-background-color: green");
                                 }else if(text.getProcessState().equals("已完工（COMPLETED）")){
-                                    this.getTableRow().setStyle("-fx-background-color: whitesmoke");
-                                }else if(text.getProcessState().equals("扣留（HOLD）")){
+                                    this.getTableRow().setStyle("-fx-background-color: ");
+                                }else if(text.getProcessState().equals("扣留（HOLD）")&&text.getError().equals("")){
                                     this.getTableRow().setStyle("-fx-background-color: yellow");
+                                }else if(text.getProcessState().equals("扣留（HOLD）")&&text.getError().equals("Y")){
+                                    this.getTableRow().setStyle("-fx-background-color: red");
                                 }
                             }
                             setText(item);
@@ -195,6 +194,7 @@ public class ViewController  implements Initializable {
         }
         return jsonStr;
     }
+
 }
 
 

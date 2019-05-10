@@ -5,9 +5,12 @@ package cn.tzauto.mes.component;
 import cn.tzauto.mes.bean.DataTableProperty;
 import cn.tzauto.mes.bean.SimpleRecipeParaProperty;
 import cn.tzauto.mes.javafx.controller.ViewController;
+import cn.tzauto.mes.utils.CommonUiUtil;
 import cn.tzauto.mes.utils.UiLogUtil;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
@@ -54,6 +57,15 @@ public class Consumer {
     }
 
 
+    public void showView(final  String text){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //update application thread
+                CommonUiUtil.alert(Alert.AlertType.INFORMATION,text);
+            }
+        });
+    }
     @JmsListener(destination = "C2S.Q.SPECIFIC_DATA")
     public Map<String,String> mesTrack(Map text) {
         System.out.println("收到信息------>" + text);
@@ -76,6 +88,8 @@ public class Consumer {
                     if(property.getRfid().equals(rfid)){
                         property.setProcessState("生产中（PROCESSING）");
                         property.setInTime(LocalDateTime.now().format(formatter));
+                        showView("开始入站");
+
                     }
                 }
                 viewController.getDataTable().setItems(list);
@@ -101,6 +115,7 @@ public class Consumer {
                 if(property.getRfid().equals(out)){
                     property.setProcessState("已完工（COMPLETED）");
                     property.setOutTime(LocalDateTime.now().format(formatter));
+                    showView("已出站");
                 }
             }
 
@@ -113,7 +128,7 @@ public class Consumer {
             String cassetteMapping = (String) text.get("CassetteMapping");
             String deviceCode = (String) text.get("DeviceCode");
             System.out.println("收到开机检查信息------>" + text);
-
+            showView("开机检查");
             SimpleRecipeParaProperty simpleRecipeParaProperty = null;
 
             ObservableList<SimpleRecipeParaProperty> list = viewController.getList();
