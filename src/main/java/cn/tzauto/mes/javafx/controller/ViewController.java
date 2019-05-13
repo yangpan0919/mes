@@ -122,7 +122,7 @@ public class ViewController  implements Initializable {
 
                                 SimpleRecipeParaProperty text = (SimpleRecipeParaProperty)this.getTableRow().getItem();
 
-                                if(text.getProcessState().equals("待作业（IDLE）")){
+                                if(text.getProcessState().equals("待作业（ WAIT）")){
                                     this.getTableRow().setStyle("-fx-background-color: ");
                                 }else if(text.getProcessState().equals("生产中（PROCESSING）")){
                                     this.getTableRow().setStyle("-fx-background-color: green");

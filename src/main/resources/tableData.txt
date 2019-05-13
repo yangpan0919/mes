@@ -8,7 +8,7 @@
             "eqp": "TELTESTEQUIP",
             "ppid": "TESTRCP1",
             "lotNum": "2",
-            "processState": "待作业（IDLE）"
+            "processState": "待作业（ WAIT）"
         },
          {
                       "lot": "TZ20190509.002",
@@ -18,7 +18,7 @@
                       "eqp": "TELTESTEQUIP",
                       "ppid": "TESTRCP2",
                       "lotNum": "3",
-                      "processState": "待作业（IDLE）"
+                      "processState": "待作业（ WAIT）"
                   }
     ]
 }
