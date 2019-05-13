@@ -132,6 +132,10 @@ public class ViewController  implements Initializable {
                                     this.getTableRow().setStyle("-fx-background-color: yellow");
                                 }else if(text.getProcessState().equals("扣留（HOLD）")&&text.getError().equals("Y")){
                                     this.getTableRow().setStyle("-fx-background-color: red");
+                                }else if(text.getProcessState().equals("已入站（TRACKIN）")){
+                                    this.getTableRow().setStyle("-fx-background-color: ");
+                                }else if(text.getProcessState().equals("已出站（TRACKOUT）")){
+                                    this.getTableRow().setStyle("-fx-background-color: ");
                                 }
                             }
                             setText(item);

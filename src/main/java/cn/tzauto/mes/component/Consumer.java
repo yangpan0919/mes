@@ -1,7 +1,6 @@
 package cn.tzauto.mes.component;
 
 
-
 import cn.tzauto.mes.bean.DataTableProperty;
 import cn.tzauto.mes.bean.SimpleRecipeParaProperty;
 import cn.tzauto.mes.javafx.controller.ViewController;
@@ -41,140 +40,163 @@ public class Consumer {
      * 4.完工检查，检查lot数量，edc数据完整性
      * 5.出站
      *
-     * @param text   接收的rfid信息
+     * @param text 接收的rfid信息
      */
 
     @JmsListener(destination = "edc.lot")
     public void edcLotMessage(Map text) {
         System.out.println("收到队列消息------>" + text);
-        if("Y".equals(text.get("result"))){
-            uiLogUtil.appendLog2EventTab(null, "数据完整性正常");
-        }else if("N".equals(text.get("result"))){
+        if ("Y".equals(text.get("result"))) {
+            uiLogUtil.appendLog2EventTab(null, "EDC数据检查通过");
+        } else if ("N".equals(text.get("result"))) {
             uiLogUtil.appendLog2EventTab(null, "数据完整性错误");
-        }else{
+        } else {
             uiLogUtil.appendLog2EventTab(null, "参数错误");
         }
     }
 
 
-    public void showView(final  String text){
+    public void showView(final String text) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 //update application thread
-                CommonUiUtil.alert(Alert.AlertType.INFORMATION,text);
+                CommonUiUtil.alert(Alert.AlertType.INFORMATION, text);
             }
         });
     }
+
     @JmsListener(destination = "C2S.Q.SPECIFIC_DATA")
-    public Map<String,String> mesTrack(Map text) {
+    public Map<String, String> mesTrack(Map text) {
         System.out.println("收到信息------>" + text);
-        Map<String,String> map = new HashMap<>();
-        if(text == null){
+        Map<String, String> map = new HashMap<>();
+        if (text == null) {
             return null;
         }
         String name = (String) text.get("msgName");
 
-        if("mes.trackIn".equals(name)){
+        if ("mes.trackIn".equals(name)) {
             System.out.println("收到入站信息------>" + text);
             String rfid = (String) text.get("RFID");
-            DataTableProperty dataTableProperty = ViewController.dataMap.get(rfid==null?"":rfid);
-            if(dataTableProperty != null){
-                uiLogUtil.appendLog2EventTab(null, rfid+" 入站...");
+            DataTableProperty dataTableProperty = ViewController.dataMap.get(rfid == null ? "" : rfid);
+            if (dataTableProperty != null) {
+                uiLogUtil.appendLog2EventTab(null, rfid + " 入站...");
 
                 ObservableList<SimpleRecipeParaProperty> list = viewController.getList();
-                for(int i=0;i<list.size();i++){
-                    SimpleRecipeParaProperty property =list.get(i);
-                    if(property.getRfid().equals(rfid)){
-                        property.setProcessState("生产中（PROCESSING）");
+                for (int i = 0; i < list.size(); i++) {
+                    SimpleRecipeParaProperty property = list.get(i);
+                    if (property.getRfid().equals(rfid)) {
+                        property.setProcessState("已入站（TRACKIN）");
                         property.setInTime(LocalDateTime.now().format(formatter));
-                        showView("开始入站");
-
+                        showView("步骤6：收到EAP请求RFID[" + rfid + "]的批次信息,回复批次信息LOT[" + dataTableProperty.getLot() + "]自动入站");
                     }
                 }
                 viewController.getDataTable().setItems(list);
                 uiLogUtil.appendLog2EventTab(null, dataTableProperty.toString());
-                map.put("LOT",dataTableProperty.getLot());
-                map.put("DESC","");
+                map.put("LOT", dataTableProperty.getLot());
+                map.put("DESC", "");
 //                map.put("SLOT",dataTableProperty.getSlot());
                 return map;
-            }else{
+            } else {
                 uiLogUtil.appendLog2EventTab(null, "未找到批次信息");
-                map.put("LOT",null);
-                map.put("DESC","未找到  "+rfid+"  对应的批次信息");
+                map.put("LOT", null);
+                map.put("DESC", "未找到  " + rfid + "  对应的批次信息");
                 return map;
             }
-        }else if("mes.trackOut".equals(name)){
-            String out = (String) text.get("mes.trackOut");
+        } else if ("mes.trackOut".equals(name)) {
+            String lot = (String) text.get("lot");
             System.out.println("收到出站信息------>" + text);
-            uiLogUtil.appendLog2EventTab(null, "出站...");
+            uiLogUtil.appendLog2EventTab(null, "批次[" + lot + "]生产结束，自动出站");
 
             ObservableList<SimpleRecipeParaProperty> list = viewController.getList();
-            for(int i=0;i<list.size();i++){
-                SimpleRecipeParaProperty property =list.get(i);
-                if(property.getRfid().equals(out)){
+            for (int i = 0; i < list.size(); i++) {
+                SimpleRecipeParaProperty property = list.get(i);
+                if (property.getLot().equals(lot)) {
                     property.setProcessState("已完工（COMPLETED）");
                     property.setOutTime(LocalDateTime.now().format(formatter));
-                    showView("已出站");
+                    showView("批次[" + lot + "]生产结束，自动出站");
                 }
             }
 
             viewController.getDataTable().setItems(list);
-            return map;
-        }else if("mes.startCheck".equals(name)){
+            uiLogUtil.appendLog2EventTab(null, "出站检查,收到EAP完工信息，向EDC请求核对生产数据.");
+            showView("步骤29：收到EAP完工信息，向EDC请求核对生产数据.");
+            //edc数据完整性
+            queueSender.sendMap("edc.data", text);
+            return null;
+        } else if ("mes.startCheck".equals(name)) {
 
             String opid = (String) text.get("OPID");
             String lot = (String) text.get("LOT");
             String cassetteMapping = (String) text.get("CassetteMapping");
             String deviceCode = (String) text.get("DeviceCode");
             System.out.println("收到开机检查信息------>" + text);
-            showView("开机检查");
+            showView("步骤11：批次[" + lot + "]开机检查，核对人，工，料，机");
             SimpleRecipeParaProperty simpleRecipeParaProperty = null;
 
             ObservableList<SimpleRecipeParaProperty> list = viewController.getList();
-            for(int i=0;i<list.size();i++){
-                SimpleRecipeParaProperty property =list.get(i);
-                if(property.getLot().equals(lot)){
+            for (int i = 0; i < list.size(); i++) {
+                SimpleRecipeParaProperty property = list.get(i);
+                if (property.getLot().equals(lot)) {
                     simpleRecipeParaProperty = property;
                 }
             }
-            uiLogUtil.appendLog2EventTab(null, opid+"  正常");
-            uiLogUtil.appendLog2EventTab(null, lot+"  正常");
-            uiLogUtil.appendLog2EventTab(null, cassetteMapping+"  正常");
-            if(simpleRecipeParaProperty != null){
-                if(simpleRecipeParaProperty.getEqp().equals(deviceCode)){
-                    uiLogUtil.appendLog2EventTab(null, deviceCode+"  正常");
-                    map.put("RESULT","Y");
-                    map.put("DESC","");
-                    map.put("LOTNUM",simpleRecipeParaProperty.getLotNum());
-                    map.put("PPID",simpleRecipeParaProperty.getPpid());
+            uiLogUtil.appendLog2EventTab(null, "人员[" + opid + "]比对通过");
+            uiLogUtil.appendLog2EventTab(null, "批次[" + lot + "]比对通过.");
+
+            if (simpleRecipeParaProperty != null) {
+                if (simpleRecipeParaProperty.getEqp().equals(deviceCode)) {
+                    uiLogUtil.appendLog2EventTab(null, "设备[" + deviceCode + "]比对通过");
+                    map.put("RESULT", "Y");
+                    map.put("DESC", "");
+                    map.put("LOTNUM", simpleRecipeParaProperty.getLotNum());
+                    map.put("PPID", simpleRecipeParaProperty.getPpid());
+                    simpleRecipeParaProperty.setProcessState("生产中（PROCESSING）");
                     return map;
-                }else{
-                    uiLogUtil.appendLog2EventTab(null, deviceCode+"  出现错误...");
-                    map.put("RESULT","N");
-                    map.put("DESC","deviceCode不匹配");
+                } else {
+                    uiLogUtil.appendLog2EventTab(null, "核对设备[" + deviceCode + "]失败.");
+                    map.put("RESULT", "N");
+                    map.put("DESC", "deviceCode不匹配");
                     return map;
                 }
-            }else{
-                uiLogUtil.appendLog2EventTab(null, deviceCode+"  出现错误...");
-                map.put("RESULT","N");
-                map.put("DESC","无法找到对应批次");
+            } else {
+                uiLogUtil.appendLog2EventTab(null, deviceCode + "  出现错误...");
+                map.put("RESULT", "N");
+                map.put("DESC", "无法找到对应批次");
                 return map;
 
             }
 
-        }else if("mes.finishCheck".equals(name)){
+        } else if ("mes.finishCheck".equals(name)) {
             System.out.println("收到完工检查信息------>" + text);
             uiLogUtil.appendLog2EventTab(null, "完工检查");
-
+            showView("步骤29：收到EAP完工信息，向EDC请求和对生产数据.");
             //edc数据完整性
-            queueSender.sendMap("edc.data",text);
-        } else{
-            uiLogUtil.appendLog2EventTab(null, "参数错误，请核对参数...");
-            map.put("LOT",null);
+            queueSender.sendMap("edc.data", text);
+        } else if ("mes.holdLot".equals(name)) {
 
-            map.put("DESC","参数错误");
-            return map;
+            ObservableList<SimpleRecipeParaProperty> list = viewController.getList();
+            for (int i = 0; i < list.size(); i++) {
+                SimpleRecipeParaProperty property = list.get(i);
+                if (property.getLot().equals(text.get("LOT"))) {
+                    property.setProcessState("扣留（HOLD）");
+                    property.setError("Y");
+
+                    uiLogUtil.appendLog2EventTab(null, "ALMS请求Hold批次");
+                    showView("步骤3：收到ALMShold批次[" + text.get("LOT") + "]请求.");
+                }
+            }
+
+            viewController.getDataTable().setItems(list);
+
+            return null;
+
+        } else {
+//            uiLogUtil.appendLog2EventTab(null, "参数错误，请核对参数...");
+            map.put("LOT", null);
+
+            map.put("DESC", "参数错误");
+//            return map;
         }
 
         return map;
