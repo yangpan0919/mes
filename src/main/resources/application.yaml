@@ -37,6 +37,6 @@ spring:
 #        send-timeout: 0s
 javafx:
   stage:
-    resizable: false
+    resizable: true
   title: MES
   appicons: /logoTaiZhi.png
