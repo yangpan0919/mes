@@ -1,6 +1,5 @@
 package cn.tzauto.mes.conf;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,7 @@ public class ContextConfig {
     public static ConfigurableApplicationContext context ;
 
     @Bean
-    public ApplicationContext test(ConfigurableApplicationContext  c){
+    public ConfigurableApplicationContext test(ConfigurableApplicationContext  c){
         context = c;
         return c;
     }
